@@ -409,8 +409,7 @@ client.on('messageCreate', async (message) => {
     }
 });
 
-client.login(process.env.DISCORD_TOKEN);
-
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`Web Dashboard berjalan di http://localhost:${PORT}`);
+    console.log(`Server berjalan di port ${PORT}`);
 });
