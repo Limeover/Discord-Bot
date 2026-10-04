@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discord Studio - Cyan Theme</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            padding: 8px;
+            gap: 8px;
+        }
+
+        /* SIDEBAR KIRI */
+        .sidebar {
+            width: 80px;
+            background-color: #121212;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 16px 0;
+            gap: 16px;
+            flex-shrink: 0;
+        }
+
+        .sidebar-brand {
+            width: 48px;
+            height: 48px;
+            background-color: #00e5ff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .sidebar-brand img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .nav-item {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: transparent;
+            border: none;
+            color: #b3b3b3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            font-size: 20px;
+        }
+
+        .nav-item:hover {
+            color: #ffffff;
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-item.active {
+            color: #00e5ff;
+            background-color: rgba(0, 229, 255, 0.1);
+        }
+
+        .nav-item::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            left: 60px;
+            background-color: #282828;
+            color: #ffffff;
+            padding: 4px 8px;
+            font-size: 11px;
+            border-radius: 4px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+            box-shadow: none;
+            z-index: 100;
+        }
+
+        .nav-item:hover::after {
+            opacity: 1;
+        }
+
+        /* AREA KANAN */
+        .content-container {
+            flex-grow: 1;
+            display: flex;
+            gap: 8px;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            background-color: #121212;
+            border-radius: 8px;
+            padding: 24px 32px;
+            overflow-y: auto;
+        }
+
+        .right-panel {
+            width: 320px;
+            background-color: #121212;
+            border-radius: 8px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+
+        .main-content::-webkit-scrollbar, .right-panel::-webkit-scrollbar {
+            width: 6px;
+        }
+        .main-content::-webkit-scrollbar-thumb, .right-panel::-webkit-scrollbar-thumb {
+            background-color: #282828;
+            border-radius: 4px;
+        }
+
+        .module-section {
+            display: none;
+        }
+
+        .module-section.active {
+            display: block;
+        }
+
+        .header-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+
+        .header-desc {
+            font-size: 13px;
+            color: #b3b3b3;
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #b3b3b3;
+            margin-bottom: 8px;
+            letter-spacing: 0.8px;
+        }
+
+        select, input[type="text"], textarea {
+            width: 100%;
+            height: 48px;
+            padding: 12px 16px;
+            background-color: #282828;
+            border: 1px solid transparent;
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        select:hover, input[type="text"]:hover, textarea:hover {
+            background-color: #2a2a2a;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23b3b3b3%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px top 50%;
+            background-size: 10px auto;
+            cursor: pointer;
+        }
+
+        select:focus, input[type="text"]:focus, textarea:focus {
+            background-color: #333333;
+            border-color: #00e5ff;
+        }
+
+        textarea {
+            height: auto;
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .file-upload-box {
+            background-color: #282828;
+            border: 2px dashed #404040;
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            min-height: 80px;
+        }
+
+        .file-upload-box:hover {
+            border-color: #00e5ff;
+            background-color: #2a2a2a;
+        }
+
+        .file-upload-box p { font-size: 13px; color: #b3b3b3; }
+        .file-upload-box span { color: #00e5ff; font-weight: 600; }
+
+        .file-info {
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #282828;
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 13px;
+            color: #00e5ff;
+            border: 1px solid #00e5ff;
+        }
+
+        .btn-remove-file {
+            background: none; border: none; color: #ff4d4d; font-weight: bold; cursor: pointer; font-size: 16px;
+        }
+
+        .color-wrapper {
+            display: flex;
+            align-items: center;
+            background-color: #282828;
+            border-radius: 8px;
+            padding: 0 16px;
+            gap: 12px;
+            position: relative;
+            height: 48px;
+        }
+
+        .color-preview-btn {
+            width: 20px; height: 20px; border-radius: 50%; background-color: #00e5ff; flex-shrink: 0;
+        }
+
+        .color-text {
+            background: transparent !important; border: none !important; outline: none !important; color: #ffffff; font-size: 15px; font-weight: 600; line-height: 48px; width: 100%; height: 100%; padding: 0;
+        }
+
+        input[type="color"] {
+            position: absolute; opacity: 0; top: 0; left: 0; width: 100%; height: 100%; cursor: pointer;
+        }
+
+        .btn-publish {
+            width: 100%; padding: 14px; background-color: #00e5ff; color: #000000; border: none; border-radius: 50px; font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 10px; transition: all 0.2s ease; box-shadow: none;
+        }
+
+        .btn-publish:hover { transform: scale(1.02); background-color: #00b8d4; }
+
+        .success-screen { display: none; text-align: center; padding: 40px 10px; }
+
+        /* Overview Widget Kanan */
+        .overview-card {
+            background-color: #181818;
+            border-radius: 12px;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .card-avatar {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background-color: #282828;
+            margin-bottom: 12px;
+            overflow: hidden;
+            border: 2px solid #00e5ff;
+        }
+
+        .card-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+
+        .card-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: #00e5ff;
+            background-color: rgba(0, 229, 255, 0.1);
+            padding: 4px 10px;
+            border-radius: 20px;
+            margin-bottom: 16px;
+        }
+
+        .status-dot {
+            width: 8px; height: 8px; background-color: #00e5ff; border-radius: 50%;
+        }
+
+        .stats-grid {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .stat-box {
+            background-color: #222222;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-value { font-size: 18px; font-weight: 700; color: #ffffff; }
+        .stat-label { font-size: 10px; color: #b3b3b3; text-transform: uppercase; margin-top: 2px; letter-spacing: 0.5px; }
+
+        /* Tombol Login / Profil User */
+        .login-discord-btn {
+            background-color: #00e5ff;
+            color: #000000;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            transition: background 0.2s;
+            box-shadow: none;
+        }
+        .login-discord-btn:hover {
+            background-color: #00b8d4;
+        }
+        .user-pill {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #181818;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .user-info-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            overflow: hidden;
+        }
+        .user-pill img {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid #00e5ff;
+        }
+        .user-pill span {
+            font-size: 13px;
+            font-weight: 600;
+            color: #ffffff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .logout-btn {
+            background-color: #ed4245;
+            color: #fff;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .logout-btn:hover {
+            background-color: #c03537;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SIDEBAR KIRI -->
+    <div class="sidebar">
+        <div class="sidebar-brand">
+            <img src="https://i.imgur.com/EItxgW8.jpeg" alt="Logo" onerror="this.style.display='none'">
+        </div>
+        
+        <button class="nav-item active" data-module="embed" data-tooltip="Embed Generator" onclick="switchModule('embed', this)">📢</button>
+        <button class="nav-item" data-module="music" data-tooltip="Music Player" onclick="switchModule('music', this)">🎵</button>
+        <button class="nav-item" data-module="moderation" data-tooltip="Auto Moderation" onclick="switchModule('moderation', this)">🛡️</button>
+        <button class="nav-item" data-module="settings" data-tooltip="Bot Settings" onclick="switchModule('settings', this)">⚙️</button>
+    </div>
+
+    <!-- AREA KANAN -->
+    <div class="content-container">
+        <!-- KONTEN UTAMA -->
+        <div class="main-content">
+            <!-- MODUL EMBED GENERATOR -->
+            <div id="module-embed" class="module-section active">
+                <div id="formSection">
+                    <div class="header-title">Discord Studio</div>
+                    <div class="header-desc">Embed Generator & Message Control</div>
+
+                    <form id="embedForm">
+                        <div class="form-group">
+                            <label>Target Server</label>
+                            <select id="targetServer">
+                                <option value="">-- Memuat daftar server... --</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Target Channel</label>
+                            <select id="targetChannel">
+                                <option value="">-- Pilih Server Terlebih Dahulu --</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Embed Title</label>
+                            <input type="text" id="embedTitle" placeholder="Masukkan judul utama pengumuman...">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Description / Content</label>
+                            <textarea id="embedDescription" placeholder="Tuliskan detail pesan (Mendukung Markdown Discord)..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Embed Image (Opsional)</label>
+                            <input type="file" id="imageFileInput" accept="image/*" style="display: none;">
+                            <div class="file-upload-box" id="uploadDropzone" onclick="document.getElementById('imageFileInput').click();">
+                                <p>📁 Pilih gambar dari komputer atau <span>drag & drop</span></p>
+                            </div>
+                            <div class="file-info" id="fileInfo">
+                                <span id="fileName">nama-file.png</span>
+                                <button type="button" class="btn-remove-file" id="btnRemoveFile">&times;</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Accent Color</label>
+                            <div class="color-wrapper">
+                                <div class="color-preview-btn" id="colorPreviewBtn">
+                                    <input type="color" id="colorPicker" value="#00e5ff">
+                                </div>
+                                <input type="text" id="colorHex" class="color-text" value="#00e5ff" placeholder="#00e5ff">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-publish" id="submitBtn">Publish Message</button>
+                    </form>
+                </div>
+
+                <div id="successSection" class="success-screen">
+                    <div class="header-title" style="color: #00e5ff;">✓ Published Successfully!</div>
+                    <p class="header-desc">Pesan embed kamu sudah terkirim ke Discord.</p>
+                    <button class="btn-publish" style="max-width: 200px; margin: 0 auto;" onclick="resetForm()">Kirim Pesan Lain</button>
+                </div>
+            </div>
+
+            <!-- MODUL MUSIC PLAYER CONTROL -->
+            <div id="module-music" class="module-section">
+                <div class="header-title">Music Player Control</div>
+                <div class="header-desc">Kelola pemutaran lagu bot musik di voice channel server.</div>
+
+                <form id="musicForm">
+                    <div class="form-group">
+                        <label>Target Server (Music)</label>
+                        <select id="musicServer">
+                            <option value="">-- Pilih Server Terlebih Dahulu --</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Cari / Masukkan Link Lagu (YouTube/Spotify)</label>
+                        <input type="text" id="songQuery" placeholder="Contoh: https://youtube.com/... atau Judul Lagu">
+                    </div>
+
+                    <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                        <button type="submit" class="btn-publish" style="margin-top: 0; background-color: #00e5ff; color: #000; box-shadow: none;">▶ Play</button>
+                        <button type="button" class="btn-publish" id="btnPause" style="margin-top: 0; background-color: #282828; color: #fff; box-shadow: none;">⏸ Pause</button>
+                        <button type="button" class="btn-publish" id="btnSkip" style="margin-top: 0; background-color: #282828; color: #fff; box-shadow: none;">⏭ Skip</button>
+                        <button type="button" class="btn-publish" id="btnStop" style="margin-top: 0; background-color: #ed4245; color: #fff; box-shadow: none;">⏹ Stop</button>
+                    </div>
+                </form>
+
+                <div class="form-group" style="background-color: #181818; padding: 16px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
+                    <label style="color: #00e5ff; margin-bottom: 6px;">Status Pemutaran Saat Ini:</label>
+                    <p id="currentPlayingSong" style="font-size: 14px; font-weight: 600; color: #ffffff;">Pilih server terlebih dahulu untuk melihat status lagu.</p>
+                </div>
+            </div>
+
+            <!-- MODUL MODERATION -->
+            <div id="module-moderation" class="module-section">
+                <div class="header-title">Auto Moderation</div>
+                <div class="header-desc">Konfigurasi filter keamanan pesan otomatis per server.</div>
+
+                <form id="automodForm">
+                    <div class="form-group">
+                        <label>Target Server (Auto Mod)</label>
+                        <select id="automodServer">
+                            <option value="">-- Pilih Server Terlebih Dahulu --</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; text-transform: none; color: #ffffff;">
+                            <input type="checkbox" id="antiLink" style="width: 18px; height: 18px; accent-color: #00e5ff;"> 
+                            Aktifkan Anti-Link (Blokir semua link & invite Discord)
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; text-transform: none; color: #ffffff;">
+                            <input type="checkbox" id="antiBadWords" style="width: 18px; height: 18px; accent-color: #00e5ff;"> 
+                            Aktifkan Sensor Kata Kasar (Bad Words)
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Daftar Kata Kasar (Pisahkan dengan koma)</label>
+                        <input type="text" id="badWordsList" placeholder="kata1, kata2, kata3">
+                    </div>
+
+                    <button type="submit" class="btn-publish" id="saveAutomodBtn">Simpan Auto Mod</button>
+                </form>
+            </div>
+
+            <!-- MODUL SETTINGS -->
+            <div id="module-settings" class="module-section">
+                <div class="header-title">Bot Settings</div>
+                <div class="header-desc">Konfigurasi umum dan bahasa preferensi bot per server.</div>
+
+                <form id="settingsForm">
+                    <div class="form-group">
+                        <label>Target Server (Pengaturan)</label>
+                        <select id="settingsServer">
+                            <option value="">-- Memuat daftar server... --</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Bahasa Bot (Bot Language)</label>
+                        <select id="botLanguage">
+                            <option value="en">English (Inggris)</option>
+                            <option value="id" selected>Bahasa Indonesia</option>
+                            <option value="ja">日本語 (Jepang)</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn-publish" id="saveSettingsBtn">Simpan Pengaturan</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- PANEL OVERVIEW DINAMIS DI KANAN -->
+        <div class="right-panel">
+            <div id="authContainer" style="width: 100%;">
+                <a href="/auth/discord" class="login-discord-btn">Login Discord</a>
+            </div>
+
+            <label id="panelHeaderLabel">Bot Overview</label>
+            <div class="overview-card">
+                <div class="card-avatar">
+                    <img id="overviewAvatar" src="" alt="Avatar" onerror="this.src='https://i.imgur.com/EItxgW8.jpeg'">
+                </div>
+                <div class="card-title" id="overviewName">Loading...</div>
+                <div class="card-badge">
+                    <div class="status-dot"></div>
+                    <span id="overviewBadgeText">Online</span>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <div class="stat-value" id="stat1Value">0</div>
+                        <div class="stat-label" id="stat1Label">Servers</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="stat2Value">0ms</div>
+                        <div class="stat-label" id="stat2Label">Ping</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchModule(moduleName, element) {
+            document.querySelectorAll('.module-section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`module-${moduleName}`).classList.add('active');
+            element.classList.add('active');
+        }
+
+        let botGlobalData = {};
+
+        async function checkUserSession() {
+            try {
+                const res = await fetch('/api/user');
+                const data = await res.json();
+                const container = document.getElementById('authContainer');
+
+                if (data.loggedIn) {
+                    container.innerHTML = `
+                        <div class="user-pill">
+                            <div class="user-info-left">
+                                <img src="${data.avatar}" alt="Avatar" onerror="this.src='https://i.imgur.com/EItxgW8.jpeg'">
+                                <span>${data.username}</span>
+                            </div>
+                            <a href="/logout" class="logout-btn">Logout</a>
+                        </div>
+                    `;
+                } else {
+                    container.innerHTML = `
+                        <a href="/auth/discord" class="login-discord-btn">Login Discord</a>
+                    `;
+                }
+            } catch (err) {
+                console.error('Gagal memeriksa sesi user:', err);
+            }
+        }
+
+        async function loadBotInfo() {
+            try {
+                const res = await fetch('/api/bot-info');
+                const data = await res.json();
+                if (!data.error) {
+                    botGlobalData = data;
+                    renderBotOverview();
+                }
+            } catch (err) {
+                console.error('Gagal memuat info bot');
+            }
+        }
+
+        function renderBotOverview() {
+            document.getElementById('panelHeaderLabel').textContent = "Bot Overview";
+            document.getElementById('overviewName').textContent = botGlobalData.username || "Bot Discord";
+            document.getElementById('overviewBadgeText').textContent = "Online";
+            document.getElementById('stat1Value').textContent = botGlobalData.servers || 0;
+            document.getElementById('stat1Label').textContent = "Servers";
+            document.getElementById('stat2Value').textContent = (botGlobalData.ping || 0) + 'ms';
+            document.getElementById('stat2Label').textContent = "Ping";
+            if (botGlobalData.avatar) {
+                document.getElementById('overviewAvatar').src = botGlobalData.avatar;
+            }
+        }
+
+        function renderServerOverview(serverData) {
+            document.getElementById('panelHeaderLabel').textContent = "Server Overview";
+            document.getElementById('overviewName').textContent = serverData.name;
+            document.getElementById('overviewBadgeText').textContent = serverData.memberCount + " Members";
+            document.getElementById('stat1Value').textContent = serverData.channelsCount;
+            document.getElementById('stat1Label').textContent = "Channels";
+            document.getElementById('stat2Value').textContent = serverData.rolesCount;
+            document.getElementById('stat2Label').textContent = "Roles";
+            if (serverData.icon) {
+                document.getElementById('overviewAvatar').src = serverData.icon;
+            } else {
+                document.getElementById('overviewAvatar').src = 'https://i.imgur.com/EItxgW8.jpeg';
+            }
+        }
+
+        // Embed Generator Elements
+        const serverSelect = document.getElementById('targetServer');
+        const channelSelect = document.getElementById('targetChannel');
+        const colorPicker = document.getElementById('colorPicker');
+        const colorPreviewBtn = document.getElementById('colorPreviewBtn');
+        const colorHex = document.getElementById('colorHex');
+        const fileInput = document.getElementById('imageFileInput');
+        const dropzone = document.getElementById('uploadDropzone');
+        const fileInfo = document.getElementById('fileInfo');
+        const fileName = document.getElementById('fileName');
+        const btnRemoveFile = document.getElementById('btnRemoveFile');
+
+        // Settings Elements
+        const settingsServerSelect = document.getElementById('settingsServer');
+        const botLanguageSelect = document.getElementById('botLanguage');
+
+        // Automod Elements
+        const automodServerSelect = document.getElementById('automodServer');
+        const antiLinkCheckbox = document.getElementById('antiLink');
+        const antiBadWordsCheckbox = document.getElementById('antiBadWords');
+        const badWordsInput = document.getElementById('badWordsList');
+
+        // Music Elements
+        const musicServerSelect = document.getElementById('musicServer');
+        const songQueryInput = document.getElementById('songQuery');
+        const currentPlayingSongText = document.getElementById('currentPlayingSong');
+
+        colorPicker.addEventListener('input', (e) => {
+            colorPreviewBtn.style.backgroundColor = e.target.value;
+            colorHex.value = e.target.value;
+        });
+
+        colorHex.addEventListener('input', (e) => {
+            let val = e.target.value.trim();
+            if (val && !val.startsWith('#')) val = '#' + val;
+            if (/^#([0-9A-F]{3}){1,2}$/i.test(val)) {
+                colorPreviewBtn.style.backgroundColor = val;
+                colorPicker.value = val;
+            }
+        });
+
+        fileInput.addEventListener('change', () => {
+            if (fileInput.files.length > 0) {
+                fileName.textContent = fileInput.files[0].name;
+                dropzone.style.display = 'none';
+                fileInfo.style.display = 'flex';
+            }
+        });
+
+        btnRemoveFile.addEventListener('click', (e) => {
+            e.stopPropagation();
+            fileInput.value = '';
+            dropzone.style.display = 'flex';
+            fileInfo.style.display = 'none';
+        });
+
+        async function loadGuilds() {
+            try {
+                const res = await fetch('/api/guilds');
+                const data = await res.json();
+                
+                const defaultOption = '<option value="">-- Pilih Server --</option>';
+                serverSelect.innerHTML = defaultOption;
+                settingsServerSelect.innerHTML = defaultOption;
+                automodServerSelect.innerHTML = defaultOption;
+                musicServerSelect.innerHTML = defaultOption;
+
+                if (data.error) return;
+
+                data.forEach(guild => {
+                    [serverSelect, settingsServerSelect, automodServerSelect, musicServerSelect].forEach(selectEl => {
+                        const opt = document.createElement('option');
+                        opt.value = guild.id;
+                        opt.textContent = guild.name;
+                        selectEl.appendChild(opt);
+                    });
+                });
+            } catch (err) {
+                [serverSelect, settingsServerSelect, automodServerSelect, musicServerSelect].forEach(selectEl => {
+                    selectEl.innerHTML = '<option value="">Gagal memuat server</option>';
+                });
+            }
+        }
+
+        serverSelect.addEventListener('change', async () => {
+            const guildId = serverSelect.value;
+            if (!guildId) {
+                channelSelect.innerHTML = '<option value="">-- Pilih Server Terlebih Dahulu --</option>';
+                renderBotOverview();
+                return;
+            }
+
+            try {
+                const resServer = await fetch(`/api/server-info/${guildId}`);
+                const serverData = await resServer.json();
+                if (!serverData.error) {
+                    renderServerOverview(serverData);
+                }
+            } catch (err) {
+                console.error("Gagal memuat info server");
+            }
+
+            channelSelect.innerHTML = '<option value="">-- Memuat channel... --</option>';
+            try {
+                const res = await fetch(`/api/channels/${guildId}`);
+                const channels = await res.json();
+                channelSelect.innerHTML = '<option value="">-- Pilih Channel --</option>';
+                channels.forEach(ch => {
+                    const opt = document.createElement('option');
+                    opt.value = ch.id;
+                    opt.textContent = `# ${ch.name}`;
+                    channelSelect.appendChild(opt);
+                });
+            } catch (err) {
+                channelSelect.innerHTML = '<option value="">Gagal memuat channel</option>';
+            }
+        });
+
+        settingsServerSelect.addEventListener('change', async () => {
+            const guildId = settingsServerSelect.value;
+            if (!guildId) return;
+
+            try {
+                const res = await fetch(`/api/settings/${guildId}`);
+                const data = await res.json();
+                if (data.language) {
+                    botLanguageSelect.value = data.language;
+                }
+            } catch (err) {
+                console.error('Gagal memuat pengaturan bahasa');
+            }
+        });
+
+        automodServerSelect.addEventListener('change', async () => {
+            const guildId = automodServerSelect.value;
+            if (!guildId) return;
+
+            try {
+                const res = await fetch(`/api/automod/${guildId}`);
+                const data = await res.json();
+                antiLinkCheckbox.checked = Boolean(data.antiLink);
+                antiBadWordsCheckbox.checked = Boolean(data.antiBadWords);
+                badWordsInput.value = data.badWordsList || '';
+            } catch (err) {
+                console.error('Gagal memuat pengaturan auto mod');
+            }
+        });
+
+        musicServerSelect.addEventListener('change', async () => {
+            const guildId = musicServerSelect.value;
+            if (!guildId) {
+                currentPlayingSongText.textContent = 'Pilih server terlebih dahulu untuk melihat status lagu.';
+                return;
+            }
+            fetchMusicStatus(guildId);
+        });
+
+        async function fetchMusicStatus(guildId) {
+            try {
+                const res = await fetch(`/api/music/${guildId}`);
+                const data = await res.json();
+                currentPlayingSongText.textContent = data.currentSong + (data.isPlaying ? ' (Sedang Diputar 🎶)' : ' (Dijeda ⏸)');
+            } catch (err) {
+                currentPlayingSongText.textContent = 'Gagal memuat status musik.';
+            }
+        }
+
+        document.getElementById('embedForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const channelId = channelSelect.value;
+            const title = document.getElementById('embedTitle').value;
+            const description = document.getElementById('embedDescription').value;
+            const color = colorHex.value;
+
+            if (!channelId || !description) {
+                alert('Harap pilih channel dan isi deskripsi!');
+                return;
+            }
+
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+
+            const formData = new FormData();
+            formData.append('channelId', channelId);
+            formData.append('title', title);
+            formData.append('description', description);
+            formData.append('color', color);
+            if (fileInput.files.length > 0) formData.append('imageFile', fileInput.files[0]);
+
+            try {
+                const res = await fetch('/api/send-embed', { method: 'POST', body: formData });
+                const result = await res.json();
+                if (result.success) {
+                    document.getElementById('formSection').style.display = 'none';
+                    document.getElementById('successSection').style.display = 'block';
+                } else {
+                    alert(result.message || 'Gagal mengirim.');
+                }
+            } catch (err) {
+                alert('Kesalahan koneksi.');
+            } finally {
+                submitBtn.textContent = 'Publish Message';
+                submitBtn.disabled = false;
+            }
+        });
+
+        document.getElementById('settingsForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const guildId = settingsServerSelect.value;
+            const language = botLanguageSelect.value;
+
+            if (!guildId) {
+                alert('Harap pilih server terlebih dahulu!');
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/settings', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ guildId, language })
+                });
+                const result = await res.json();
+                if (result.success) {
+                    alert('Pengaturan bahasa berhasil disimpan!');
+                } else {
+                    alert(result.message || 'Gagal menyimpan pengaturan.');
+                }
+            } catch (err) {
+                alert('Terjadi kesalahan koneksi ke server.');
+            }
+        });
+
+        document.getElementById('automodForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const guildId = automodServerSelect.value;
+            const antiLink = antiLinkCheckbox.checked;
+            const antiBadWords = antiBadWordsCheckbox.checked;
+            const badWordsList = badWordsInput.value;
+
+            if (!guildId) {
+                alert('Harap pilih server terlebih dahulu!');
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/automod', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ guildId, antiLink, antiBadWords, badWordsList })
+                });
+                const result = await res.json();
+                if (result.success) {
+                    alert('Pengaturan Auto Mod berhasil disimpan!');
+                } else {
+                    alert(result.message || 'Gagal menyimpan Auto Mod.');
+                }
+            } catch (err) {
+                alert('Terjadi kesalahan koneksi ke server.');
+            }
+        });
+
+        document.getElementById('musicForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const guildId = musicServerSelect.value;
+            const query = songQueryInput.value;
+
+            if (!guildId || !query) {
+                alert('Pilih server dan masukkan judul/link lagu!');
+                return;
+            }
+            sendMusicAction(guildId, 'play', query);
+        });
+
+        document.getElementById('btnPause').addEventListener('click', () => {
+            const guildId = musicServerSelect.value;
+            if (guildId) sendMusicAction(guildId, 'pause');
+        });
+
+        document.getElementById('btnSkip').addEventListener('click', () => {
+            const guildId = musicServerSelect.value;
+            if (guildId) sendMusicAction(guildId, 'skip');
+        });
+
+        document.getElementById('btnStop').addEventListener('click', () => {
+            const guildId = musicServerSelect.value;
+            if (guildId) sendMusicAction(guildId, 'stop');
+        });
+
+        async function sendMusicAction(guildId, action, query = '') {
+            try {
+                const res = await fetch('/api/music/control', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ guildId, action, query })
+                });
+                const result = await res.json();
+                if (result.success) {
+                    fetchMusicStatus(guildId);
+                    if (action === 'play') songQueryInput.value = '';
+                } else {
+                    alert(result.message || 'Gagal menjalankan perintah musik.');
+                }
+            } catch (err) {
+                alert('Kesalahan koneksi ke server.');
+            }
+        }
+
+        function resetForm() {
+            document.getElementById('embedTitle').value = '';
+            document.getElementById('embedDescription').value = '';
+            fileInput.value = '';
+            dropzone.style.display = 'flex';
+            fileInfo.style.display = 'none';
+            document.getElementById('formSection').style.display = 'block';
+            document.getElementById('successSection').style.display = 'none';
+        }
+
+        checkUserSession();
+        loadGuilds();
+        loadBotInfo();
+    </script>
+</body>
+</html>
